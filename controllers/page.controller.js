@@ -1,4 +1,5 @@
 const usersController = require("../controllers/users.controller");
+const usersModel = require("../models/users.model");
 let dataTokens = usersController.dataTokens;
 
 module.exports = {
@@ -45,10 +46,12 @@ module.exports = {
     }
   },
 
-  dashboard: (req, res) => {
+  dashboard: async (req, res) => {
+    let users = await usersModel.User.find();
     res.render("dashboard/dashboard", {
       title: "Master",
       layout: "layouts/main",
+      users: users,
     });
   },
 };

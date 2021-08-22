@@ -30,9 +30,9 @@ module.exports = {
       });
     } else {
       await usersModel.User.insertMany({
-        email,
         firstName,
         lastName,
+        email,
         password: hashedPassword,
       });
       res.render("login", {
