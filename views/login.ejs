@@ -1,5 +1,8 @@
 <link rel="stylesheet" href="/css/user-action.css" />
-<div class="container d-flex justify-content-center align-items-center" style="width: 300px">
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="width: 300px"
+>
   <div class="row">
     <div class="col box">
       <h4 class="fw-bold">Welcome to Traditional Games</h4>
@@ -8,17 +11,42 @@
       <% if (typeof message != 'undefined') { %>
       <div class="alert <%= messageClass %>" role="alert"><%= message %></div>
       <% } %>
-      <form method="POST" action="/login">
+      <form method="POST" action="/user/login">
         <div class="mb-3 form">
-          <input type="email" class="form-control" id="exampleInputEmail1" name="email" placeholder="Email address" aria-describedby="emailHelp" required />
+          <input
+            type="email"
+            class="form-control"
+            id="exampleInputEmail1"
+            name="email"
+            placeholder="Email address"
+            aria-describedby="emailHelp"
+            required
+          />
         </div>
         <div class="mb-3 form">
-          <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required />
+          <input
+            type="password"
+            class="form-control"
+            id="exampleInputPassword1"
+            name="password"
+            placeholder="Password"
+            required
+          />
         </div>
-        <button type="submit" class="btn btn-primary w-100" style="border-radius: 10px">Sign In</button>
-        <div class="to-login d-flex align-items-center justify-content-center mt-3">
+        <button
+          type="submit"
+          class="btn btn-primary w-100"
+          style="border-radius: 10px"
+        >
+          Sign In
+        </button>
+        <div
+          class="to-login d-flex align-items-center justify-content-center mt-3"
+        >
           <p class="text-muted mb-0 me-2">Don't have an account?</p>
-          <a href="/register" class="fw-bold text-decoration-none">Register</a>
+          <a href="/user/register" class="fw-bold text-decoration-none"
+            >Register</a
+          >
         </div>
       </form>
     </div>

@@ -7,13 +7,6 @@ const expressLayouts = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { body, validationResult, check } = require("express-validator");
-
-// Local module
-const users = require("./utils/users");
-const authTokens = require("./utils/auth-tokens");
-
-const port = 5000;
 
 app.use(cors());
 
@@ -25,230 +18,30 @@ app.use(cookieParser());
 
 // To make public folder
 app.use(express.static("public"));
-app.use("/user/", express.static("public"));
-app.use("/login", express.static("public"));
-app.use("/register", express.static("public"));
-app.use("/", express.static("public"));
 
 // EJS
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 
 // Database
-require('./config/db')
+require("./config/db");
 
 // Router
-const pageRouter = require('./routes/page.router')
-app.use('/', pageRouter)
+const pageRouter = require("./routes/page.router");
+app.use("/", pageRouter);
 
-// app.get("/", (req, res) => {
-//   res.render("index", {
-//     title: "Traditional Games",
-//     layout: "layouts/main",
-//   });
-// });
+const usersRouter = require("./routes/users.router");
+app.use("/user", usersRouter);
 
-app.get("/register", (req, res) => {
-  res.render("register", {
-    title: "Register",
+// To handle user error
+app.get("*", (req, res) => {
+  res.render("404", {
+    title: "404 not found",
     layout: "layouts/main",
   });
 });
 
-// Hash password
-const crypto = require("crypto");
-
-const getHashedPassword = (password) => {
-  const sha256 = crypto.createHash("sha256");
-  const hash = sha256.update(password).digest("base64");
-  return hash;
-};
-
-app.post(
-  "/register",
-  // Express validator
-  [
-    check("email", "Email is not valid").isEmail(),
-    body("email").custom((value) => {
-      const duplicate = users.checkDuplicate(value);
-      if (duplicate) {
-        throw new Error("Email is already exist!");
-      }
-      return true;
-    }),
-    check("password", "Password at least 8 characters in length.").isLength({ min: 8 }),
-    // check("confirmPassword", "Password at least 8 characters in length.").isLength({ min: 8 }),
-    body("confirmPassword").custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error("Password confirmation does not match password");
-      }
-      return true;
-    }),
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    const { email, firstName, lastName, password, confirmPassword } = req.body;
-    const hashedPassword = getHashedPassword(password);
-    if (!errors.isEmpty()) {
-      res.render("register", {
-        layout: "layouts/main",
-        title: "Register",
-        errors: errors.array(),
-      });
-    } else {
-      users.addUser({ email, firstName, lastName, password: hashedPassword });
-      res.render("login", {
-        layout: "layouts/main",
-        title: "Log In",
-        message: "Account successfully created",
-        messageClass: "alert-success",
-      });
-    }
-  }
-);
-
-app.get("/login", (req, res) => {
-  res.render("login", {
-    layout: "layouts/main",
-    title: "Log In",
-  });
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Listening from port ${PORT}`);
 });
-
-const generateAuthToken = () => {
-  return crypto.randomBytes(30).toString("hex");
-};
-
-// This will hold the users and authToken related to users
-// const dataTokens = authTokens.loadFile();
-const dataTokens = {};
-const data = {}
-
-app.post("/login", (req, res, next) => {
-  const { email, password } = req.body;
-  const hashedPassword = getHashedPassword(password);
-  const file = users.loadFile();
-
-  const user = file.find((u) => {
-    return u.email === email && hashedPassword === u.password;
-  });
-
-  if (user) {
-    const authToken = generateAuthToken();
-    const time = authTokens.getTime();
-    user.time = time;
-
-    // Store authentication token
-    dataTokens[authToken] = user;
-    // data.authToken = user
-    
-    // authTokens.saveTokens(dataTokens);
-
-    // Setting the auth token in cookies
-    res.cookie("AuthToken", authToken, { expires: new Date(Date.now() + 900000) });
-
-    // Redirect user to the user page
-    res.redirect("/user");
-  } else {
-    res.render("login", {
-      layout: "layouts/main",
-      title: "Log In",
-      message: "Invalid username or password",
-      messageClass: "alert-danger",
-    });
-  }
-});
-
-app.use((req, res, next) => {
-  // Get auth token from the cookies
-  const authToken = req.cookies["AuthToken"];
-
-  // Inject the user to the request
-  req.user = dataTokens[authToken];
-  // req.user = data.authToken
-  req.token = authToken;
-
-  next();
-});
-
-app.get("/user", (req, res) => {
-  if (req.user) {
-    res.setHeader("Content-Type", "text/html");
-    res.render("index", {
-      user: req.user,
-      layout: "layouts/main",
-      title: "Traditional Games",
-    });
-    // console.log(req.user);
-  } else {
-    res.render("login", {
-      layout: "layouts/main",
-      title: "Log In",
-      message: "Please login to continue",
-      messageClass: "alert-danger",
-    });
-  }
-});
-
-// const requireAuth = (req, res, next) => {
-//   if (req.user) {
-//     next();
-//   } else {
-//     res.render("login", {
-//       layout: "layouts/main",
-//       title: "Log In",
-//       message: "Please login to continue",
-//       messageClass: "alert-danger",
-//     });
-//   }
-// };
-
-// app.get("/user", requireAuth, (req, res) => {
-//   res.render("index", {
-//     layout: "layouts/main",
-//     title: "Traditional Games",
-//   });
-// });
-
-app.get("/games", (req, res) => {
-  if (req.user) {
-    res.setHeader("Content-Type", "text/html");
-    res.render("games", {
-      title: "Rock, Paper, Scissor",
-      layout: "layouts/main",
-    });
-    // console.log(req.user);
-  } else {
-    res.render("login", {
-      layout: "layouts/main",
-      title: "Log In",
-      message: "Please login to continue",
-      messageClass: "alert-danger",
-    });
-  }
-  // res.render("games", {
-  //   title: "Rock, Paper, Scissor",
-  //   layout: "layouts/main",
-  //   user: req.user,
-  // });
-});
-
-app.get("/logout", (req, res) => {
-  const token = req.token;
-  delete dataTokens[token];
-  // res.send(req.cookies["AuthToken"]);
-  res.clearCookie("AuthToken")
-  res.redirect("/");
-});
-
-//
-// route for development purpose
-app.get("/token", (req, res) => {
-  res.send(req.cookies);
-  // res.send(req.token);
-});
-
-app.listen(port, () => {
-  console.log(`Listening from port ${port}`);
-});
-
-// code adobted from https://stackabuse.com/handling-authentication-in-express-js
