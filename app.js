@@ -34,12 +34,19 @@ app.use("/", express.static("public"));
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 
-app.get("/", (req, res) => {
-  res.render("index", {
-    title: "Traditional Games",
-    layout: "layouts/main",
-  });
-});
+// Database
+require('./config/db')
+
+// Router
+const pageRouter = require('./routes/page.router')
+app.use('/', pageRouter)
+
+// app.get("/", (req, res) => {
+//   res.render("index", {
+//     title: "Traditional Games",
+//     layout: "layouts/main",
+//   });
+// });
 
 app.get("/register", (req, res) => {
   res.render("register", {
