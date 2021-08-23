@@ -1,0 +1,49 @@
+<main>
+  <div class="container">
+    <h2>Detail Users</h2>
+    <% if (!user) { %>
+    <div class="alert alert-danger fw-bold" role="alert">
+      Data contact tidak ada <br />
+      <a href="/contact" class="alert-link fw-normal"
+        >&laquo; Kembali ke daftar contact</a
+      >
+    </div>
+    <% } else { %>
+    <div class="card">
+      <div class="card-body">
+        <div class="container">
+          <div class="row d-flex mb-3">
+            <div class="d-flex flex-column" style="width: auto">
+              <span>Name</span>
+              <span>Email</span>
+              <span>Password</span>
+            </div>
+            <div class="d-flex flex-column" style="width: auto">
+              <span>: <%= user.firstName + ' ' + user.lastName%></span>
+              <span>: <%= user.email %></span>
+              <span>: <%= user.password %></span>
+            </div>
+          </div>
+          <a href="/contact/edit/<%= user.nama %>" class="btn btn-primary badge"
+            >Ubah</a
+          >
+          <!-- <a href="/contact/delete/<%= user.nama %>" class="btn btn-danger badge" onclick="return confirm('yakin?')">Hapus</a> -->
+          <form action="/contact?_method=DELETE" method="POST" class="d-inline">
+            <input type="hidden" name="nama" value="<%= user.nama %>" />
+            <button
+              type="submit"
+              class="btn btn-danger badge"
+              onclick="return confirm('yakin?')"
+            >
+              Hapus
+            </button>
+          </form>
+          <a href="/dashboard/users" class="card-link d-block mt-3"
+            >&laquo; Back to users</a
+          >
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</main>

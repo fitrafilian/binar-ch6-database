@@ -30,19 +30,9 @@ module.exports = {
   },
 
   games: (req, res) => {
-    if (req.user) {
-      res.setHeader("Content-Type", "text/html");
-      res.render("games", {
-        title: "Rock, Paper, Scissor",
-        layout: "layouts/main",
-      });
-    } else {
-      res.render("login", {
-        layout: "layouts/main",
-        title: "Log In",
-        message: "Please login to continue",
-        messageClass: "alert-danger",
-      });
-    }
+    res.render("games", {
+      title: "Rock, Paper, Scissor",
+      layout: "layouts/main",
+    });
   },
 };

@@ -1,24 +1,15 @@
+const mongoose = require("mongoose");
 const usersModel = require("../models/users.model");
 const usersController = require("../controllers/users.controller");
 let dataTokens = usersController.dataTokens;
 
 module.exports = {
   dashboard: (req, res) => {
-    if (req.user) {
-      res.setHeader("Content-Type", "text/html");
-      res.render("dashboard/dashboard", {
-        title: "Dashboard",
-        layout: "dashboard/layouts/dashboard-layout",
-        activeDashboard: "linkActive",
-      });
-    } else {
-      res.render("login", {
-        layout: "layouts/main",
-        title: "Log In",
-        message: "Please login to continue",
-        messageClass: "alert-danger",
-      });
-    }
+    res.render("dashboard/dashboard", {
+      title: "Dashboard",
+      layout: "dashboard/layouts/dashboard-layout",
+      activeDashboard: "linkActive",
+    });
   },
 
   users: async (req, res) => {
@@ -28,6 +19,18 @@ module.exports = {
       layout: "dashboard/layouts/dashboard-layout",
       users: users,
       activeUsers: "linkActive",
+    });
+  },
+
+  details: async (req, res) => {
+    let user = await usersModel.User.findOne({
+      _id: mongoose.Types.ObjectId(req.params._id),
+    });
+
+    res.render("dashboard/details", {
+      layout: "dashboard/layouts/dashboard-layout",
+      title: user.firstName + " " + user.lastName,
+      user: user,
     });
   },
 
