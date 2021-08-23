@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <base href="/" />
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <link rel="stylesheet" href="./css/dashboard.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <style>
+      #wrapper .list-group .linkActive {
+        background-color: #eaeaea;
+        border-left: 4px solid 	#198754 ;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="d-flex" id="wrapper">
+        <!-- Sidebar-->
+        <div class="border-end bg-white" id="sidebar-wrapper">
+          <div class="sidebar-heading border-bottom bg-light">
+            Master
+          </div>
+          <div class="list-group list-group-flush">
+            <a
+              class="
+                list-group-item list-group-item-action list-group-item-light
+                p-3
+                <% if (typeof activeDashboard != 'undefined') { %>
+                 <%- activeDashboard %> 
+                <% } %>
+              "
+              href="/dashboard"
+              >Dashboard</a
+            >
+            <a
+              class="
+                list-group-item list-group-item-action list-group-item-light
+                p-3
+                <% if (typeof activeUsers != 'undefined') { %>
+                  <%- activeUsers %> 
+                 <% } %>
+              "
+              href="/dashboard/users"
+              >Users Master</a
+            >
+          </div>
+        </div>
+        <!-- Page content wrapper-->
+        <div id="page-content-wrapper">
+          <!-- Top navigation-->
+          <nav
+            class="navbar navbar-expand-lg navbar-dark bg-light border-bottom"
+          >
+            <div class="container-fluid">
+              <button class="btn btn-success" id="sidebarToggle">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                  <li class="nav-item active">
+                    <a class="btn btn-success" href="/dashboard/homepage">Homepage</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <!-- Page content-->
+          <%- body %>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+      // Toggle the side navigation
+      const sidebarToggle = document.body.querySelector("#sidebarToggle");
+      if (sidebarToggle) {
+        // Uncomment Below to persist sidebar toggle between refreshes
+        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+        //     document.body.classList.toggle('sb-sidenav-toggled');
+        // }
+        sidebarToggle.addEventListener("click", (event) => {
+          event.preventDefault();
+          document.body.classList.toggle("sb-sidenav-toggled");
+          localStorage.setItem(
+            "sb|sidebar-toggle",
+            document.body.classList.contains("sb-sidenav-toggled")
+          );
+        });
+      }
+    });
+  </script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"
+  ></script>
+</html>

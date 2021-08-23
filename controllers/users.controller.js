@@ -53,7 +53,30 @@ module.exports = {
       password: hashedPassword,
     });
 
-    if (user) {
+    let emailAdmin = "";
+    if (email == "admin@admin.com") {
+      emailAdmin = email;
+    }
+
+    const admin = await usersModel.User.findOne({
+      email: emailAdmin,
+      password: hashedPassword,
+    });
+
+    if (admin) {
+      const authToken = usersModel.generateAuthToken();
+      const time = usersModel.getTime();
+      user.time = time;
+
+      // Store authentication token
+      dataTokens[authToken] = user;
+
+      // Setting the auth token in cookies
+      res.cookie("AuthToken", authToken, {
+        expires: new Date(Date.now() + 900000),
+      });
+      res.redirect("/dashboard");
+    } else if (user) {
       const authToken = usersModel.generateAuthToken();
       const time = usersModel.getTime();
       user.time = time;

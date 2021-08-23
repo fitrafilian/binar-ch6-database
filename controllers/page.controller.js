@@ -45,13 +45,4 @@ module.exports = {
       });
     }
   },
-
-  dashboard: async (req, res) => {
-    let users = await usersModel.User.find();
-    res.render("dashboard/dashboard", {
-      title: "Master",
-      layout: "layouts/main",
-      users: users,
-    });
-  },
 };

@@ -33,6 +33,9 @@ app.use("/", pageRouter);
 const usersRouter = require("./routes/users.router");
 app.use("/user", usersRouter);
 
+const dashboardRouter = require("./routes/dashboard.router");
+app.use("/dashboard", dashboardRouter);
+
 // To handle user error
 app.get("*", (req, res) => {
   res.render("404", {
