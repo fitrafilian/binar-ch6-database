@@ -1,0 +1,51 @@
+<main>
+  <div class="wrapper" style="width: 400px; margin-left: 30px; margin-top: 30px">
+    <form method="post" action="/dashboard/user/insert">
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" onkeyup='saveValue(this);' required />
+      </div>
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" onkeyup='saveValue(this);' required />
+      </div>
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" onkeyup='saveValue(this);' required />
+        <% if (typeof errors != 'undefined') { %>
+          <% let err = errors.find(error => error.msg == "Email is not valid!")%>
+          <% if (err) { %>
+           <span style="color: red; font-size: 12px; margin-left: 13px;">Email is not valid!</span>
+          <% } %>
+        <% } %>
+        <% if (typeof errors != 'undefined') { %>
+          <% let err = errors.find(error => error.msg == "Email is already exist!")%>
+          <% if (err) { %>
+           <span style="color: red; font-size: 12px; margin-left: 13px;">Email is already exist!</span>
+          <% } %>
+        <% } %>
+      </div>
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required />
+        <% if (typeof errors != 'undefined') { %>
+          <% let err = errors.find(error => error.msg == "Password at least 8 characters in length.")%>
+          <% if (err) { %>
+           <span style="color: red; font-size: 12px; margin-left: 13px;">Password at least 8 characters in length.</span>
+          <% } %>
+        <% } %>
+      </div>
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">Reenter Password</label>
+        <input type="password" class="form-control" id="password" name="confirmPassword" required />
+        <% if (typeof errors != 'undefined') { %>
+          <% let err = errors.find(error => error.msg == "Password confirmation does not match password")%>
+          <% if (err) { %>
+           <span style="color: red; font-size: 12px; margin-left: 13px;">Password confirmation does not match password</span>
+          <% } %>
+        <% } %>
+      </div>
+      <button type="submit" class="btn btn-primary w-100" style="border-radius: 10px">Insert user</button>
+    </form>
+  </div>
+</main>

@@ -4,9 +4,7 @@
     <% if (!user) { %>
     <div class="alert alert-danger fw-bold" role="alert">
       Data contact tidak ada <br />
-      <a href="/contact" class="alert-link fw-normal"
-        >&laquo; Kembali ke daftar contact</a
-      >
+      <a href="/contact" class="alert-link fw-normal">&laquo; Kembali ke daftar contact</a>
     </div>
     <% } else { %>
     <div class="card">
@@ -24,23 +22,13 @@
               <span>: <%= user.password %></span>
             </div>
           </div>
-          <a href="/contact/edit/<%= user.nama %>" class="btn btn-primary badge"
-            >Ubah</a
-          >
+          <a href="/contact/edit/<%= user.nama %>" class="btn btn-primary badge">Ubah</a>
           <!-- <a href="/contact/delete/<%= user.nama %>" class="btn btn-danger badge" onclick="return confirm('yakin?')">Hapus</a> -->
-          <form action="/contact?_method=DELETE" method="POST" class="d-inline">
-            <input type="hidden" name="nama" value="<%= user.nama %>" />
-            <button
-              type="submit"
-              class="btn btn-danger badge"
-              onclick="return confirm('yakin?')"
-            >
-              Hapus
-            </button>
+          <form action="/dashboard/user?_method=DELETE" method="POST" class="d-inline">
+            <input type="hidden" name="_id" value="<%= user._id %>" />
+            <button type="submit" class="btn btn-danger badge" onclick="return confirm('yakin?')">Hapus</button>
           </form>
-          <a href="/dashboard/users" class="card-link d-block mt-3"
-            >&laquo; Back to users</a
-          >
+          <a href="/dashboard/users" class="card-link d-block mt-3">&laquo; Back to users</a>
         </div>
       </div>
     </div>

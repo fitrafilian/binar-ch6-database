@@ -5,82 +5,48 @@
       <h4 class="fw-bold">Welcome to Traditional Games</h4>
       <h5>Create account</h5>
       <p class="text-muted">Please insert your personal information</p>
-      <% if (typeof message != 'undefined') { %>
-      <div class="alert <%= messageClass %>" role="alert"><%= message %></div>
-      <% } %> <% if (typeof errors != 'undefined') { %>
-      <div
-        class="alert alert-danger"
-        style="padding: 5px 0 !important; width: 100% !important"
-        role="alert"
-      >
-        <ul class="m-0">
-          <% errors.forEach(error => { %>
-          <li><%= error.msg %></li>
-          <% }) %>
-        </ul>
-      </div>
-      <% } %>
       <form method="post" action="/user/register">
         <div class="mb-3 form">
-          <input
-            type="text"
-            class="form-control"
-            id="firstName"
-            placeholder="First name"
-            name="firstName"
-            required
-          />
+          <input type="text" class="form-control" id="firstName" placeholder="First name" name="firstName" onkeyup='saveValue(this);' required />
         </div>
         <div class="mb-3 form">
-          <input
-            type="text"
-            class="form-control"
-            id="lastName"
-            placeholder="Last Name"
-            name="lastName"
-            required
-          />
+          <input type="text" class="form-control" id="lastName" placeholder="Last Name" name="lastName" onkeyup='saveValue(this);' required />
         </div>
         <div class="mb-3 form">
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            placeholder="Email address"
-            name="email"
-            required
-          />
+          <input type="email" class="form-control" id="email" placeholder="Email address" name="email" onkeyup='saveValue(this);' required />
+          <% if (typeof errors != 'undefined') { %>
+            <% let err = errors.find(error => error.msg == "Email is not valid!")%>
+            <% if (err) { %>
+             <span style="color: red; font-size: 12px; margin-left: 13px;">Email is not valid!</span>
+            <% } %>
+          <% } %>
+          <% if (typeof errors != 'undefined') { %>
+            <% let err = errors.find(error => error.msg == "Email is already exist!")%>
+            <% if (err) { %>
+             <span style="color: red; font-size: 12px; margin-left: 13px;">Email is already exist!</span>
+            <% } %>
+          <% } %>
         </div>
         <div class="mb-3 form">
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Password"
-            name="password"
-            required
-          />
+          <input type="password" class="form-control" id="password" placeholder="Password" name="password" required />
+          <% if (typeof errors != 'undefined') { %>
+            <% let err = errors.find(error => error.msg == "Password at least 8 characters in length.")%>
+            <% if (err) { %>
+             <span style="color: red; font-size: 12px; margin-left: 13px;">Password at least 8 characters in length.</span>
+            <% } %>
+          <% } %>
         </div>
         <div class="mb-3 form">
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Re-enter your password"
-            name="confirmPassword"
-            required
-          />
+          <input type="password" class="form-control" id="confirmPassword" placeholder="Re-enter your password" name="confirmPassword" required />
+          <% if (typeof errors != 'undefined') { %>
+            <% let err = errors.find(error => error.msg == "Password confirmation does not match password")%>
+            <% if (err) { %>
+             <span style="color: red; font-size: 12px; margin-left: 13px;">Password confirmation does not match password</span>
+            <% } %>
+          <% } %>
         </div>
-        <button
-          type="submit"
-          class="btn btn-primary w-100"
-          style="border-radius: 10px"
-        >
-          Submit
-        </button>
-        <div
-          class="to-login d-flex align-items-center justify-content-center mt-3"
-        >
+        <button type="submit" class="btn btn-primary w-100" style="border-radius: 10px">Submit</button>
+        <div class="to-login d-flex align-items-center justify-content-center mt-3">
           <p class="text-muted mb-0 me-2">Already have an account?</p>
           <a href="/user/login" class="fw-bold text-decoration-none">Log In</a>
         </div>
@@ -88,3 +54,36 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  document.getElementById("firstName").value = getSavedValue("firstName");    // set the value to this input
+  document.getElementById("lastName").value = getSavedValue("lastName");   // set the value to this input
+  document.getElementById("email").value = getSavedValue("email");   // set the value to this input
+  /* Here you can add more inputs to set value. if it's saved */
+
+  //Save the value function - save it to sessionStorage as (ID, VALUE)
+  function saveValue(e){
+      var id = e.id;  // get the sender's id to save it . 
+      var val = e.value; // get the value. 
+      sessionStorage.setItem(id, val);// Every time user writing something, the sessionStorage's value will override . 
+  }
+
+  //get the saved value function - return the value of "v" from sessionStorage. 
+  function getSavedValue  (v){
+      if (!sessionStorage.getItem(v)) {
+          return "";// You can change this to your defualt value. 
+      }
+      return sessionStorage.getItem(v);
+  }
+
+  window.onbeforeunload = function(){
+    sessionStorage.setItem("origin", window.location.href);
+  }
+
+  window.onload = function(){
+    if(window.location.href == sessionStorage.getItem("origin")){
+        sessionStorage.clear();
+    }
+  }
+
+</script>

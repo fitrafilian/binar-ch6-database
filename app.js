@@ -7,6 +7,9 @@ const expressLayouts = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const methodOverride = require("method-override");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 app.use(cors());
 
@@ -23,8 +26,23 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 app.use(expressLayouts);
 
+// Setup method-override
+app.use(methodOverride("_method"));
+
 // Database
 require("./config/db");
+
+// Flash config
+app.use(cookieParser("secret"));
+app.use(
+  session({
+    cookie: { maxAge: 6000 },
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(flash());
 
 // Router
 const pageRouter = require("./routes/page.router");
