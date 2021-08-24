@@ -1,3 +1,4 @@
 dashboard-layout.ejs
 register.ejs
 insert.ejs
+update.ejs

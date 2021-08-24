@@ -44,10 +44,7 @@ const registerValidator = [
   check("password", "Password at least 8 characters in length.").isLength({
     min: 8,
   }),
-  check(
-    "confirmPassword",
-    "Password at least 8 characters in length."
-  ).isLength({ min: 8 }),
+  check("confirmPassword", "Password at least 8 characters in length.").isLength({ min: 8 }),
   body("confirmPassword").custom((value, { req }) => {
     if (value !== req.body.password) {
       throw new Error("Password confirmation does not match password");

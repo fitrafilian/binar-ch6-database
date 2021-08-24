@@ -1,0 +1,42 @@
+<main>
+  <div class="wrapper" style="width: 400px; margin-left: 30px; margin-top: 30px">
+    <form method="post" action="/dashboard/update?_method=PUT">
+      <input type="hidden" name="_id" value="<%= user._id %>">
+      <input type="hidden" name="oldEmail" value="<%= user.Email %>">
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">First Name</label>
+        <input type="text" class="form-control" id="firstName" name="firstName" value="<%= user.firstName %>" />
+      </div>
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">Last Name</label>
+        <input type="text" class="form-control" id="lastName" name="lastName" value="<%= user.lastName %>" />
+      </div>
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" name="email" value="<%= user.email || dataUser.email %>" disabled="disabled"/>
+        <p class="" style="color: red; font-size: 12px;">Email cannot be changed</p>
+      </div>
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" value="<%= user.password %>" />
+        <% if (typeof errors != 'undefined') { %>
+          <% let err = errors.find(error => error.msg == "Password at least 8 characters in length.")%>
+          <% if (err) { %>
+           <span style="color: red; font-size: 12px; margin-left: 13px;">Password at least 8 characters in length.</span>
+          <% } %>
+        <% } %>
+      </div>
+      <div class="mb-3 form">
+        <label for="nama" class="form-label">Reenter Password</label>
+        <input type="password" class="form-control" id="password" name="confirmPassword" value="<%= user.password %>" />
+        <% if (typeof errors != 'undefined') { %>
+          <% let err = errors.find(error => error.msg == "Password confirmation does not match password")%>
+          <% if (err) { %>
+           <span style="color: red; font-size: 12px; margin-left: 13px;">Password confirmation does not match password</span>
+          <% } %>
+        <% } %>
+      </div>
+      <button type="submit" class="btn btn-primary w-100" style="border-radius: 10px">Update user</button>
+    </form>
+  </div>
+</main>

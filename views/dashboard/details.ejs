@@ -22,7 +22,7 @@
               <span>: <%= user.password %></span>
             </div>
           </div>
-          <a href="/contact/edit/<%= user.nama %>" class="btn btn-primary badge">Ubah</a>
+          <a href="/dashboard/user/update/<%= user._id %>" class="btn btn-primary badge">Ubah</a>
           <!-- <a href="/contact/delete/<%= user.nama %>" class="btn btn-danger badge" onclick="return confirm('yakin?')">Hapus</a> -->
           <form action="/dashboard/user?_method=DELETE" method="POST" class="d-inline">
             <input type="hidden" name="_id" value="<%= user._id %>" />

@@ -66,12 +66,53 @@ module.exports = {
           res.redirect("/dashboard/users");
         }
       );
-      // res.render("dashboard/users", {
-      //   layout: "dashboard/layouts/dashboard-layout",
-      //   title: "Users Master",
-      //   message: "Account successfully created",
-      //   messageClass: "alert-success",
-      // });
+    }
+  },
+
+  update: async (req, res) => {
+    let user = await usersModel.User.findOne({
+      _id: mongoose.Types.ObjectId(req.params._id),
+    });
+
+    res.render("dashboard/update", {
+      title: "Update user",
+      layout: "dashboard/layouts/dashboard-layout",
+      user: user,
+    });
+  },
+
+  updatePut: async (req, res) => {
+    const errors = validationResult(req);
+    const { email, firstName, lastName, password, confirmPassword } = req.body;
+    const dataUser = await usersModel.User.findOne({ _id: req.body._id });
+    let setPassword = "";
+    if (dataUser.password == password) {
+      setPassword = password;
+    } else {
+      setPassword = await usersModel.getHashedPassword(password);
+    }
+    const user = req.body;
+    if (!errors.isEmpty()) {
+      res.render("dashboard/update", {
+        layout: "dashboard/layouts/dashboard-layout",
+        title: "Update user",
+        errors: errors.array(),
+        user: user,
+        dataUser: dataUser,
+      });
+    } else {
+      await usersModel.User.updateOne(
+        { _id: req.body._id },
+        {
+          $set: {
+            firstName: firstName,
+            lastName: lastName,
+            password: setPassword,
+          },
+        }
+      ).then(() => {
+        res.redirect("/dashboard/user/" + req.body._id);
+      });
     }
   },
 
