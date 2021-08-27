@@ -1,5 +1,6 @@
 const usersModel = require("../models/users.model");
 const { body, validationResult, check } = require("express-validator");
+const mongoose = require("mongoose");
 
 let dataTokens = {};
 
@@ -97,6 +98,107 @@ module.exports = {
         title: "Log In",
         message: "Invalid username or password",
         messageClass: "alert-danger",
+      });
+    }
+  },
+
+  updatePut: async (req, res) => {
+    const errors = validationResult(req);
+    const { email, firstName, lastName, password, confirmPassword } = req.body;
+    const dataUser = await usersModel.User.findOne(mongoose.Types.ObjectId(req.user._id));
+    let setPassword = "";
+    if (dataUser.password == password) {
+      setPassword = password;
+    } else {
+      setPassword = await usersModel.getHashedPassword(password);
+    }
+    const user = req.body;
+    if (!errors.isEmpty()) {
+      res.render("dashboard/update", {
+        layout: "dashboard/layouts/dashboard-layout",
+        title: "Update user",
+        errors: errors.array(),
+        user: user,
+        dataUser: dataUser,
+      });
+    } else {
+      await usersModel.User.updateOne(
+        { _id: req.body._id },
+        {
+          $set: {
+            firstName: firstName,
+            lastName: lastName,
+            password: setPassword,
+          },
+        }
+      ).then(() => {
+        res.redirect("/");
+      });
+    }
+  },
+
+  profile: async (req, res) => {
+    let user = await usersModel.User.findOne({ email: req.user.email });
+    res.render("profile", {
+      layout: "layouts/main",
+      title: "Profile",
+      user: user,
+    });
+  },
+
+  updateProfile: async (req, res) => {
+    const errors = validationResult(req);
+    const { email, firstName, lastName, phone } = req.body;
+    const dataUser = await usersModel.User.findOne({ _id: req.user._id });
+    const user = req.user;
+    if (!errors.isEmpty()) {
+      res.render("profile", {
+        layout: "layouts/main",
+        title: "Update user",
+        errors: errors.array(),
+        user: user,
+        dataUser: dataUser,
+      });
+    } else {
+      await usersModel.User.updateOne(
+        { _id: req.user._id },
+        {
+          $set: {
+            firstName: firstName,
+            lastName: lastName,
+            phone: phone,
+          },
+        }
+      ).then(() => {
+        res.redirect("/user/profile");
+      });
+    }
+  },
+
+  updatePassword: async (req, res) => {
+    const errors = validationResult(req);
+    const { oldPassword, password, confirmPassword } = req.body;
+    const hashedPassword = await usersModel.getHashedPassword(password);
+    const dataUser = await usersModel.User.findOne({ _id: req.user._id });
+    const user = req.user;
+    if (!errors.isEmpty()) {
+      res.render("profile", {
+        layout: "layouts/main",
+        title: "Update User",
+        errors: errors.array(),
+        user: user,
+        dataUser: dataUser,
+      });
+    } else {
+      await usersModel.User.updateOne(
+        { _id: req.user._id },
+        {
+          $set: {
+            password: hashedPassword,
+          },
+        }
+      ).then(() => {
+        res.redirect("/user/profile");
       });
     }
   },

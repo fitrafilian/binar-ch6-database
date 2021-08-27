@@ -17,6 +17,10 @@ const User = mongoose.model("user", {
     type: String,
     required: true,
   },
+  phone: {
+    type: Number,
+    required: false,
+  },
 });
 
 const crypto = require("crypto");
@@ -65,18 +69,75 @@ const getTime = function () {
   return timeNow;
 };
 
-const requireAuth = (req, res, next) => {
-  if (req.user) {
-    next();
-  } else {
-    res.render("login", {
-      layout: "layouts/main",
-      title: "Log In",
-      message: "Please login to continue",
-      messageClass: "alert-danger",
-    });
-  }
-};
+const requireAuth = [];
+// (req, res, next) => {
+//   if (req.user) {
+//     next();
+//   } else {
+//     res.render("login", {
+//       layout: "layouts/main",
+//       title: "Log In",
+//       message: "Please login to continue",
+//       messageClass: "alert-danger",
+//     });
+//   }
+// };
+
+const updateValidator = [
+  // check("email", "Email is not valid").isEmail(),
+  // body("email").custom(async (value) => {
+  //   const duplicate = await User.findOne({ email: value });
+  //   if (value != req.body.oldEmail && duplicate) {
+  //     throw new Error("Email is already exist!");
+  //   }
+  //   return true;
+  // }),
+  check("password", "Password at least 8 characters in length.").isLength({
+    min: 8,
+  }),
+  check("confirmPassword", "Password at least 8 characters in length.").isLength({ min: 8 }),
+  body("confirmPassword").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("Password confirmation does not match password");
+    }
+    return true;
+  }),
+];
+
+// const profileValidator = [check("phone", "Phone number is not valid!").isMobilePhone("id-ID")];
+
+const profileValidator = [];
+//   body("phone").custom((value, { req }) => {
+//     if (value.length == 0) {
+//       return true;
+//     } else if (value.isMobilePhone("id-ID")) {
+//       return true;
+//     } else {
+//       throw new Error("Phone number is not valid!");
+//     }
+//   }),
+// ];
+
+const passwordValidator = [
+  body("oldPassword").custom(async (value, { req }) => {
+    hashedOldPassword = getHashedPassword(value);
+    const duplicate = await User.findOne({ email: req.user.email });
+    if (duplicate.password !== hashedOldPassword) {
+      throw new Error("Password doesn't match!");
+    }
+    return true;
+  }),
+  check("password", "Password at least 8 characters in length.").isLength({
+    min: 8,
+  }),
+  check("confirmPassword", "Password at least 8 characters in length.").isLength({ min: 8 }),
+  body("confirmPassword").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("Password confirmation does not match password");
+    }
+    return true;
+  }),
+];
 
 module.exports = {
   User,
@@ -85,4 +146,7 @@ module.exports = {
   registerValidator,
   getTime,
   requireAuth,
+  updateValidator,
+  profileValidator,
+  passwordValidator,
 };

@@ -7,12 +7,17 @@ const playerRock = document.querySelector("#player .box-rock"),
   panel = document.querySelector(".panel"),
   boxes = document.querySelectorAll("#player button"),
   boxesComputer = document.querySelectorAll("#computer .box"),
-  refresh = document.querySelector(".refresh");
+  refresh = document.querySelector(".refresh"),
+  playerScore = document.querySelectorAll(".player-score"),
+  computerScore = document.querySelectorAll(".computer-score");
+
+let pScore = 0;
+let cScore = 0;
 
 // Start
-var start = function () {
+const start = function () {
   // Initial condition
-  panel.style.color = "#bd0000";
+  // panel.style.color = "#bd0000";
 
   for (let i = 0; i < 3; i++) {
     boxes[i].classList.add("box-hover");
@@ -109,9 +114,6 @@ var start = function () {
       const computer = getComputer();
       const player = i.querySelector("img").className;
       const generate = rules(computer, player);
-      console.log("comp:" + computer);
-      console.log("player:" + player);
-      console.log("hasil:" + generate);
 
       // image player
       box(i);
@@ -146,9 +148,17 @@ var start = function () {
           if (generate == playerWin) {
             panel.innerHTML = playerWin;
             panel.style.backgroundColor = "#4C9654";
+            pScore += 1;
+            playerScore.forEach((e) => {
+              e.innerHTML = pScore;
+            });
           } else if (generate == computerWin) {
             panel.innerHTML = computerWin;
             panel.style.backgroundColor = "#bd0000";
+            cScore += 1;
+            computerScore.forEach((e) => {
+              e.innerHTML = cScore;
+            });
           } else {
             panel.innerHTML = draw;
             panel.style.backgroundColor = "#ffae42";
@@ -200,6 +210,7 @@ refresh.addEventListener("click", function () {
   panel.style.removeProperty("transform");
   // panel.style.fontSize = "100px";
   panel.innerHTML = "VS";
+  panel.style.color = "#bd0000";
 
   // Panel Responsiveness
   const media768 = window.matchMedia("(min-width: 768px)");
@@ -220,7 +231,7 @@ refresh.addEventListener("click", function () {
   playerRock.removeAttribute("disabled");
   playerPaper.removeAttribute("disabled");
   playerScissor.removeAttribute("disabled");
-  start();
+  // start();
 });
 
 /*

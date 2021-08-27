@@ -2,3 +2,5 @@ dashboard-layout.ejs
 register.ejs
 insert.ejs
 update.ejs
+index.ejs
+profile.ejs

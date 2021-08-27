@@ -34,11 +34,7 @@
           <div class="dropdown">
             <button
               class="btn btn-secondary dropdown-toggle"
-              style="
-                background-color: transparent !important;
-                border: none;
-                outline: none !important;
-              "
+              style="background-color: transparent !important; border: none; outline: none !important"
               type="button"
               id="dropdownMenuButton1"
               data-bs-toggle="dropdown"
@@ -51,19 +47,13 @@
                 <a
                   id="profile"
                   class="dropdown-item px-1"
-                  href="#"
+                  href="/user/profile"
                   style="color: black; margin: 0"
-                  data-bs-toggle="modal"
-                  data-bs-target="#profileModal"
                   >Profile</a
                 >
               </li>
               <li style="padding: 10px; display: inline-block">
-                <a
-                  id="logout"
-                  class="dropdown-item px-1"
-                  href="/user/logout"
-                  style="color: black; margin: 0"
+                <a id="logout" class="dropdown-item px-1" href="/user/logout" style="color: black; margin: 0"
                   >Log Out</a
                 >
               </li>
@@ -78,54 +68,7 @@
         <% } %>
       </div>
 
-      <!-- Profile Modal -->
-      <div
-        class="modal fade"
-        id="profileModal"
-        tabindex="-1"
-        aria-labelledby="profileModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="profileModalLabel">
-                <% if (typeof user != 'undefined') { %> <%= user.firstName + ' '
-                + user.lastName %> <% } %>
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body d-flex flex-column">
-              <span
-                >First Name: <% if (typeof user != 'undefined') { %> <%=
-                user.firstName %> <% } %>
-              </span>
-              <span
-                >Last Name: <% if (typeof user != 'undefined') { %> <%=
-                user.firstName %> <% } %>
-              </span>
-              <span
-                >Email: <% if (typeof user != 'undefined') { %> <%= user.email
-                %> <% } %>
-              </span>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       <div class="wrapper">
         <h1>PLAY TRADITIONAL GAME</h1>
@@ -157,13 +100,9 @@
         </div>
 
         <div class="img">
-          <a href="#"
-            ><img src="image/scroll-down.svg" id="slide-left" class="slide"
-          /></a>
+          <a href="#"><img src="image/scroll-down.svg" id="slide-left" class="slide" /></a>
           <img src="image/rockpaperstrategy-1600.jpg" />
-          <a href="#"
-            ><img src="image/scroll-down.svg" id="slide-right" class="slide"
-          /></a>
+          <a href="#"><img src="image/scroll-down.svg" id="slide-right" class="slide" /></a>
         </div>
       </div>
     </div>
@@ -194,10 +133,7 @@
               </div>
             </div>
             <div class="text-content">
-              <p>
-                If you miss your childhood, we provide many traditional games
-                here!
-              </p>
+              <p>If you miss your childhood, we provide many traditional games here!</p>
             </div>
           </div>
 
@@ -343,9 +279,7 @@
           </div>
           <div class="box-bot">
             <div class="box-bot-flex">
-              <div class="review">
-                “One of my gaming highlights of the year.”
-              </div>
+              <div class="review">“One of my gaming highlights of the year.”</div>
               <div class="date">October 18, 2018</div>
             </div>
           </div>
@@ -369,10 +303,7 @@
           </div>
           <div class="box-bot">
             <div class="box-bot-flex">
-              <div class="review">
-                “The next big thing in the world of streaming and survival
-                games.”
-              </div>
+              <div class="review">“The next big thing in the world of streaming and survival games.”</div>
               <div class="date">December 21, 2018</div>
             </div>
           </div>
@@ -396,10 +327,7 @@
           </div>
           <div class="box-bot">
             <div class="box-bot-flex">
-              <div class="review">
-                “Snoop Dogg Playing The Wildly Entertaining ‘SOS’ Is
-                Ridiculous.”
-              </div>
+              <div class="review">“Snoop Dogg Playing The Wildly Entertaining ‘SOS’ Is Ridiculous.”</div>
               <div class="date">December 24, 2018</div>
             </div>
           </div>
@@ -432,10 +360,8 @@
 
           <div class="text-3">
             <p>
-              In order to start receiving our news, all you have to do is enter
-              your email address. Everything else will be taken care of by us.
-              We will send you emails containing information about game. We
-              don’t spam.
+              In order to start receiving our news, all you have to do is enter your email address. Everything else will
+              be taken care of by us. We will send you emails containing information about game. We don’t spam.
             </p>
           </div>
 

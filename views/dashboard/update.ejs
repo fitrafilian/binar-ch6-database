@@ -1,6 +1,6 @@
 <main>
   <div class="wrapper" style="width: 400px; margin-left: 30px; margin-top: 30px">
-    <form method="post" action="/dashboard/update?_method=PUT">
+    <form method="post" action="/dashboard/user/update?_method=PUT">
       <input type="hidden" name="_id" value="<%= user._id %>">
       <input type="hidden" name="oldEmail" value="<%= user.Email %>">
       <div class="mb-3 form">

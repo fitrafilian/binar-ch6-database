@@ -1,0 +1,156 @@
+<head>
+  <base href="/" />
+  <link rel="stylesheet" href="./css/profile.css" />
+</head>
+<main>
+  <div class="container">
+    <div class="box">
+      <div class="wrapper px-3">
+        <nav
+          style="
+            --bs-breadcrumb-divider: url(
+              &#34;data:image/svg + xml,
+              %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='currentColor'/%3E%3C/svg%3E&#34;
+            );
+          "
+          aria-label="breadcrumb"
+        >
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/" style="text-decoration: none; color: #ffb548; font-weight: 600">Home</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Profile</li>
+          </ol>
+        </nav>
+        <section class="profile">
+          <h5>Profile</h5>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="row">
+                <div class="photo col-5 d-flex justify-content-center">
+                  <img src="/image/profile.svg" alt="Photo Profile" style="width: 150px" />
+                </div>
+                <input type="hidden" name="_id" value="<%= user._id %>">
+                <input type="hidden" name="oldEmail" value="<%= user.Email %>">
+                <div class="col-md-7" style="border-right: 1px solid #c9c7c7;">
+                  <form method="post" action="/user/profile/update?_method=PUT">
+                    <div class="mb-3 form">
+                      <label for="nama" class="form-label">Email Address</label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        name="email"
+                        value="<%= user.email %>"
+                        disabled="disabled"
+                      />
+                      <!-- <p class="" style="color: red; font-size: 12px">Email cannot be changed</p> -->
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="mb-3 form">
+                          <label for="nama" class="form-label">First Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="firstName"
+                            name="firstName"
+                            value="<%= user.firstName %>"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="mb-3 form">
+                          <label for="nama" class="form-label">Last Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="lastName"
+                            name="lastName"
+                            value="<%= user.lastName %>"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="mb-3 form">
+                      <label for="nama" class="form-label">Phone Number</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="phone"
+                        placeholder="Type your phone number"
+                        name="phone"
+                        value="<%= user.phone %>"
+                        />
+                        <% if (typeof errors != 'undefined') { %>
+                          <% let err = errors.find(error => error.msg == "Phone number is not valid!")%>
+                          <% if (err) { %>
+                           <span style="color: red; font-size: 12px; margin-left: 13px;">Phone number is not valid!</span>
+                          <% } %>
+                        <% } %>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="border-radius: 10px; color: white;">Update Profile</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <form method="post" action="/user/password/update?_method=PUT">
+                <div class="mb-3 form">
+                  <label for="nama" class="form-label">Old Password</label>
+                  <input type="password" class="form-control" id="oldPassword" placeholder="Type your old password" name="oldPassword" value="" />
+                  <% if (typeof errors != 'undefined') { %>
+                    <% let err = errors.find(error => error.msg == "Password doesn't match!")%>
+                    <% if (err) { %>
+                     <span style="color: red; font-size: 12px; margin-left: 13px;">Password doesn't match!</span>
+                    <% } %>
+                  <% } %>
+                </div>
+                <div class="mb-3 form">
+                  <label for="nama" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Type your new password" name="password" value="" />
+                  <% if (typeof errors != 'undefined') { %>
+                    <% let err = errors.find(error => error.msg == "Password at least 8 characters in length.")%>
+                    <% if (err) { %>
+                     <span style="color: red; font-size: 12px; margin-left: 13px;">Password at least 8 characters in length.</span>
+                    <% } %>
+                  <% } %>
+                </div>
+                <div class="mb-3 form">
+                  <label for="nama" class="form-label">Reenter Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Retype your new password" name="confirmPassword" value="" />
+                  <% if (typeof errors != 'undefined') { %>
+                    <% let err = errors.find(error => error.msg == "Password confirmation does not match password")%>
+                    <% if (err) { %>
+                     <span style="color: red; font-size: 12px; margin-left: 13px;">Password confirmation does not match password</span>
+                    <% } %>
+                  <% } %>
+                </div>
+                <button type="submit" class="btn btn-primary" style="border-radius: 10px;">Update Password</button>
+              </form>
+            </div>
+          </div>
+        </section>
+        <section class="biodata">
+          <h5>Profile Biodata</h5>
+          <div class="row">
+            <div class="col">
+              <form action="">
+                <textarea name="" id="" cols="30" rows="10" style="width: 100%;"></textarea>
+                <button type="submit" class="btn btn-primary" style="border-radius: 10px;">Update Biodata</button>
+              </form>
+            </div>
+          </div>
+        </section>
+        <section class="history">
+          <h5>Profile History</h5>
+          <div class="row">
+            <div class="col">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo adipisci ut placeat itaque cumque. Eius in omnis neque, similique accusamus blanditiis repellat quia. Reiciendis pariatur et esse dolorum sapiente architecto!
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>

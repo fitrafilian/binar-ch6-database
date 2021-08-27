@@ -27,8 +27,8 @@ module.exports = {
   details: async (req, res) => {
     let user = await usersModel.User.findOne({
       _id: mongoose.Types.ObjectId(req.params._id),
+      // _id: req.params._id,
     });
-
     res.render("dashboard/details", {
       layout: "dashboard/layouts/dashboard-layout",
       title: user.firstName + " " + user.lastName,
