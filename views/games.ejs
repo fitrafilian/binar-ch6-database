@@ -5,9 +5,15 @@
       <div
         class="back-wrapper d-flex justify-content-center align-items-center"
       >
-        <a href="/"
-          ><img src="img-suwit-jawa/back.png" alt="Back" class="back"
-        /></a>
+      <form action="/user/history" method="post">
+        <input type="hidden" name="playerScore" id="playerScore" value="">
+        <input type="hidden" name="computerScore" id="computerScore" value="">
+        <input type="hidden" name="result" id="result" value="">
+        <button type="submit" style="background-color: transparent; border: transparent;"><img src="img-suwit-jawa/back.png" alt="Back" class="back"
+          /></button>
+        <!-- <a href="/" id="back"
+          ></a> -->
+      </form>
       </div>
       <img src="img-suwit-jawa/logo 1.png" alt="Logo" class="logo" />
       <span>ROCK PAPER SCISSOR</span>
@@ -86,6 +92,7 @@
       </div>
     </div> -->
   </div>
+  
 </main>
 
 <script src="js/games.js"></script>

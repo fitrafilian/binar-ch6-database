@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const usersModel = require("../models/users.model");
+const biodataModel = require("../models/biodata.model");
+const historyModel = require("../models/history.model");
 const usersController = require("../controllers/users.controller");
 const { body, validationResult, check } = require("express-validator");
 let dataTokens = usersController.dataTokens;
@@ -29,10 +31,14 @@ module.exports = {
       _id: mongoose.Types.ObjectId(req.params._id),
       // _id: req.params._id,
     });
+    let biodata = await biodataModel.Biodata.findOne({ idUser: req.params._id });
+    let histories = await historyModel.History.find({ idUser: req.params._id });
     res.render("dashboard/details", {
       layout: "dashboard/layouts/dashboard-layout",
       title: user.firstName + " " + user.lastName,
       user: user,
+      biodata: biodata,
+      histories: histories,
     });
   },
 
@@ -83,7 +89,7 @@ module.exports = {
 
   updatePut: async (req, res) => {
     const errors = validationResult(req);
-    const { email, firstName, lastName, password, confirmPassword } = req.body;
+    const { email, firstName, lastName, phone, password, confirmPassword } = req.body;
     const dataUser = await usersModel.User.findOne({ _id: req.body._id });
     let setPassword = "";
     if (dataUser.password == password) {
@@ -108,6 +114,7 @@ module.exports = {
             firstName: firstName,
             lastName: lastName,
             password: setPassword,
+            phone: phone,
           },
         }
       ).then(() => {

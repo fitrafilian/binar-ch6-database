@@ -17,6 +17,10 @@
         <p class="" style="color: red; font-size: 12px;">Email cannot be changed</p>
       </div>
       <div class="mb-3 form">
+        <label for="nama" class="form-label">Phone Number</label>
+        <input type="text" class="form-control" id="phone" name="phone" value="<% if (user.phone) { %><%= user.phone %><% } %>" />
+      </div>
+      <div class="mb-3 form">
         <label for="nama" class="form-label">Password</label>
         <input type="password" class="form-control" id="password" name="password" value="<%= user.password %>" />
         <% if (typeof errors != 'undefined') { %>

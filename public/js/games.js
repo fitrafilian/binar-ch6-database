@@ -13,6 +13,7 @@ const playerRock = document.querySelector("#player .box-rock"),
 
 let pScore = 0;
 let cScore = 0;
+let result = undefined;
 
 // Start
 const start = function () {
@@ -163,6 +164,16 @@ const start = function () {
             panel.innerHTML = draw;
             panel.style.backgroundColor = "#ffae42";
           }
+          if (pScore > cScore) {
+            result = "Win";
+          } else if (pScore < cScore) {
+            result = "Lose";
+          } else if (pScore == cScore) {
+            result = "Draw";
+          }
+          document.getElementById("playerScore").value = pScore;
+          document.getElementById("computerScore").value = cScore;
+          document.getElementById("result").value = result;
         }, 0);
 
         // setTimeout(() => {
@@ -233,6 +244,32 @@ refresh.addEventListener("click", function () {
   playerScissor.removeAttribute("disabled");
   // start();
 });
+
+// const back = document.querySelector("#back");
+
+// back.addEventListener("click", () => {
+//   fetch("/user/history", {
+//     // Adding method type
+//     method: "POST",
+
+//     // Adding body or contents to send
+//     body: JSON.stringify({
+//       player: pScore,
+//       computer: cScore,
+//       result: result,
+//     }),
+
+//     // Adding headers to the request
+//     headers: {
+//       "Content-type": "application/json; charset=UTF-8",
+//     },
+//   }) // Converting to JSON
+//     .then((response) => response.json())
+//     .then((response) => console.log(response))
+
+//     // Displaying results to console
+//     .then((json) => console.log(json));
+// });
 
 /*
 // Initial condition

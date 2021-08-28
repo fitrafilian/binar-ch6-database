@@ -1,25 +1,27 @@
 <main>
   <div class="container">
-    <h2>Detail Users</h2>
     <% if (!user) { %>
     <div class="alert alert-danger fw-bold" role="alert">
       User not found! <br />
       <a href="/dashboard/users" class="alert-link fw-normal">&laquo; Back to users menu</a>
     </div>
     <% } else { %>
-    <div class="card">
+    <div class="card my-2">
       <div class="card-body">
+        <h3>User's Profile</h3>
         <div class="container">
           <div class="row d-flex mb-3">
             <div class="d-flex flex-column" style="width: auto">
               <span>Name</span>
               <span>Email</span>
               <span>Password</span>
+              <span>Phone Number</span>
             </div>
             <div class="d-flex flex-column" style="width: auto">
               <span>: <%= user.firstName + ' ' + user.lastName%></span>
               <span>: <%= user.email %></span>
               <span>: <%= user.password %></span>
+              <span>: <%= user.phone %></span>
             </div>
           </div>
           <a href="/dashboard/user/update/<%= user._id %>" class="btn btn-primary badge">Update</a>
@@ -32,5 +34,56 @@
       </div>
     </div>
     <% } %>
+    <div class="card my-2">
+      <div class="card-body">
+        <h3>User's Profile</h3>
+        <div class="container">
+          <div class="row d-flex mb-3">
+            <% if (!biodata) { %>
+              <h5 style="color: red;">This user hasn't biodata</h5>
+            <% } else { %>
+              <%= biodata.biodata %> 
+            <% } %> 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card my-2">
+      <div class="card-body">
+        <h3>User's History</h3>
+        <div class="container">
+          <div class="row d-flex mb-3">
+            <div class="d-flex flex-column" style="width: auto">
+              <% if (histories.length == 0) { %>
+                <h5 style="color: red;">This user hasn't play any game yet</h5>
+              <% } else { %>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">No.</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Player's Score</th>
+                      <th scope="col">Computer's Score</th>
+                      <th scope="col">Win/Lose</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% histories.forEach((history, i) => { i++ %>
+                    <tr>
+                      <th scope="row"><%= i++ %></th>
+                      <td><%= history.date %></td>
+                      <td><%= history.player %></td>
+                      <td><%= history.computer %></td>
+                      <td><%= history.result %></td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              <% } %> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
   </div>
 </main>

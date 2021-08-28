@@ -31,7 +31,7 @@
                   <img src="/image/profile.svg" alt="Photo Profile" style="width: 150px" />
                 </div>
                 <input type="hidden" name="_id" value="<%= user._id %>">
-                <input type="hidden" name="oldEmail" value="<%= user.Email %>">
+                <input type="hidden" name="oldEmail" value="<%= user.email %>">
                 <div class="col-md-7" style="border-right: 1px solid #c9c7c7;">
                   <form method="post" action="/user/profile/update?_method=PUT">
                     <div class="mb-3 form">
@@ -118,7 +118,7 @@
                 </div>
                 <div class="mb-3 form">
                   <label for="nama" class="form-label">Reenter Password</label>
-                  <input type="password" class="form-control" id="password" placeholder="Retype your new password" name="confirmPassword" value="" />
+                  <input type="password" class="form-control" id="password" placeholder="Retype your new password" name="confirmPassword"/>
                   <% if (typeof errors != 'undefined') { %>
                     <% let err = errors.find(error => error.msg == "Password confirmation does not match password")%>
                     <% if (err) { %>
@@ -135,9 +135,9 @@
           <h5>Profile Biodata</h5>
           <div class="row">
             <div class="col">
-              <form action="">
-                <textarea name="" id="" cols="30" rows="10" style="width: 100%;"></textarea>
-                <button type="submit" class="btn btn-primary" style="border-radius: 10px;">Update Biodata</button>
+              <form method="post" action="/user/biodata/update?_method=PUT">
+                <textarea name="biodata" id="biodata" cols="30" rows="10" style="width: 100%;" ><%= biodata.biodata %></textarea>
+                <button type="submit" class="btn btn-primary mt-2" style="border-radius: 10px;">Update Biodata</button>
               </form>
             </div>
           </div>
@@ -146,7 +146,32 @@
           <h5>Profile History</h5>
           <div class="row">
             <div class="col">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo adipisci ut placeat itaque cumque. Eius in omnis neque, similique accusamus blanditiis repellat quia. Reiciendis pariatur et esse dolorum sapiente architecto!
+              <% if (histories.length > 0) { %>
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">No.</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Player's Score</th>
+                      <th scope="col">Computer's Score</th>
+                      <th scope="col">Win/Lose</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% histories.forEach((history, i) => { i++ %>
+                    <tr>
+                      <th scope="row"><%= i++ %></th>
+                      <td><%= history.date %></td>
+                      <td><%= history.player %></td>
+                      <td><%= history.computer %></td>
+                      <td><%= history.result %></td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                </table>
+              <% } else { %>
+                <h5 style="color: red;">You haven't play any game yet</h5>
+                <% } %> 
             </div>
           </div>
         </section>

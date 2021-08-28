@@ -1,4 +1,6 @@
 const usersModel = require("../models/users.model");
+const biodataModel = require("../models/biodata.model");
+const historyModel = require("../models/history.model");
 const { body, validationResult, check } = require("express-validator");
 const mongoose = require("mongoose");
 
@@ -137,13 +139,39 @@ module.exports = {
     }
   },
 
+  auth: (req, res, next) => {
+    // Get auth token from the cookies
+    const authToken = req.cookies["AuthToken"];
+
+    // Inject the user to the request
+    req.user = dataTokens[authToken];
+
+    next();
+  },
+
   profile: async (req, res) => {
-    let user = await usersModel.User.findOne({ email: req.user.email });
-    res.render("profile", {
-      layout: "layouts/main",
-      title: "Profile",
-      user: user,
-    });
+    let biodata = await biodataModel.Biodata.findOne({ idUser: req.user._id });
+    let histories = await historyModel.History.find({ idUser: req.user._id });
+    if (biodata) {
+      res.render("profile", {
+        layout: "layouts/main",
+        title: "Profile",
+        user: req.user,
+        biodata: biodata,
+        histories: histories,
+      });
+    } else {
+      biodata = {
+        biodata: "",
+      };
+      res.render("profile", {
+        layout: "layouts/main",
+        title: "Profile",
+        user: req.user,
+        biodata: biodata,
+        histories: histories,
+      });
+    }
   },
 
   updateProfile: async (req, res) => {
@@ -170,6 +198,7 @@ module.exports = {
           },
         }
       ).then(() => {
+        req.user.phone = phone;
         res.redirect("/user/profile");
       });
     }
@@ -200,6 +229,50 @@ module.exports = {
       ).then(() => {
         res.redirect("/user/profile");
       });
+    }
+  },
+
+  biodataUpdate: async (req, res) => {
+    const { biodata } = req.body;
+    const user = req.user;
+    const userBio = await biodataModel.Biodata.findOne({ idUser: mongoose.Types.ObjectId(req.user._id) });
+    if (userBio) {
+      await biodataModel.Biodata.updateOne(
+        { idUser: mongoose.Types.ObjectId(req.user._id) },
+        {
+          $set: {
+            biodata: biodata,
+          },
+        }
+      ).then(() => {
+        res.redirect("/user/profile");
+      });
+    } else {
+      await biodataModel.Biodata.insertMany({
+        biodata: biodata,
+        idUser: mongoose.Types.ObjectId(req.user._id),
+      }).then(() => {
+        res.redirect("/user/profile");
+      });
+    }
+  },
+
+  history: async (req, res) => {
+    const { playerScore, computerScore, result } = req.body;
+    if (result.length > 0) {
+      const time = usersModel.getTime();
+      req.body.time = time;
+      await historyModel.History.insertMany({
+        date: req.body.time,
+        player: playerScore,
+        computer: computerScore,
+        result: result,
+        idUser: mongoose.Types.ObjectId(req.user._id),
+      }).then(() => {
+        res.redirect("/");
+      });
+    } else {
+      res.redirect("/");
     }
   },
 
