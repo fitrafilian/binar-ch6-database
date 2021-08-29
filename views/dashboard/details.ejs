@@ -24,19 +24,30 @@
               <span>: <%= user.phone %></span>
             </div>
           </div>
-          <a href="/dashboard/user/update/<%= user._id %>" class="btn btn-primary badge">Update</a>
-          <form action="/dashboard/user?_method=DELETE" method="POST" class="d-inline">
-            <input type="hidden" name="_id" value="<%= user._id %>" />
-            <button type="submit" class="btn btn-danger badge" onclick="return confirm('are you sure?')">Delete</button>
-          </form>
-          <a href="/dashboard/users" class="card-link d-block mt-3">&laquo; Back to users menu</a>
+          <% if (user.id == '6122f6e5d534771c0846bc42') { %>
+            <button href="/dashboard/user/update/<%= user._id %>" class="btn btn-primary badge" disabled="disabled">Update</button>
+            <form action="/dashboard/user?_method=DELETE" method="POST" class="d-inline">
+              <input type="hidden" name="_id" value="<%= user._id %>" />
+              <button type="submit" class="btn btn-danger badge" onclick="return confirm('are you sure?')" disabled="disabled">Delete</button>
+              <span style="color: red; font-size: 14px; margin-left: 10px;">Cannot change admin master</span>
+            </form>
+            <a href="/dashboard/users" class="card-link d-block mt-3">&laquo; Back to users menu</a>
+           
+          <% } else { %>
+            <a href="/dashboard/user/update/<%= user._id %>" class="btn btn-primary badge">Update</a>
+            <form action="/dashboard/user?_method=DELETE" method="POST" class="d-inline">
+              <input type="hidden" name="_id" value="<%= user._id %>" />
+              <button type="submit" class="btn btn-danger badge" onclick="return confirm('are you sure?')">Delete</button>
+            </form>
+            <a href="/dashboard/users" class="card-link d-block mt-3">&laquo; Back to users menu</a>
+          <% } %> 
         </div>
       </div>
     </div>
     <% } %>
     <div class="card my-2">
       <div class="card-body">
-        <h3>User's Profile</h3>
+        <h3>User's Biodata</h3>
         <div class="container">
           <div class="row d-flex mb-3">
             <% if (!biodata) { %>

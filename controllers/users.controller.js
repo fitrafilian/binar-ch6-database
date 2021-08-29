@@ -198,6 +198,8 @@ module.exports = {
           },
         }
       ).then(() => {
+        req.user.firstName = firstName;
+        req.user.lastName = lastName;
         req.user.phone = phone;
         res.redirect("/user/profile");
       });

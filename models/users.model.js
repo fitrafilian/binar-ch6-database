@@ -69,19 +69,18 @@ const getTime = function () {
   return timeNow;
 };
 
-const requireAuth = [];
-// (req, res, next) => {
-//   if (req.user) {
-//     next();
-//   } else {
-//     res.render("login", {
-//       layout: "layouts/main",
-//       title: "Log In",
-//       message: "Please login to continue",
-//       messageClass: "alert-danger",
-//     });
-//   }
-// };
+const requireAuth = (req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    res.render("login", {
+      layout: "layouts/main",
+      title: "Log In",
+      message: "Please login to continue",
+      messageClass: "alert-danger",
+    });
+  }
+};
 
 const updateValidator = [
   // check("email", "Email is not valid").isEmail(),
@@ -106,7 +105,7 @@ const updateValidator = [
 
 // const profileValidator = [check("phone", "Phone number is not valid!").isMobilePhone("id-ID")];
 
-const profileValidator = [];
+const profileValidator = []
 //   body("phone").custom((value, { req }) => {
 //     if (value.length == 0) {
 //       return true;
